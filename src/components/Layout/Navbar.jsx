@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { X } from "lucide-react";
 
@@ -47,6 +48,7 @@ const timelines = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
@@ -59,6 +61,14 @@ export default function Navbar() {
     projectDetails: '',
     timeline: ''
   });
+
+  // Close all menus when route changes
+  useEffect(() => {
+    setIsServicesOpen(false);
+    setIsMenuOpen(false);
+    setIsSideMenuOpen(false);
+    setStep(1);
+  }, [pathname]);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -167,10 +177,10 @@ export default function Navbar() {
                 />
               )}
             </button>
-            <Link href="/case-studies" className="">
+            <Link href="/case-studies" className="" onClick={closeAll}>
               Case studies
             </Link>
-            <Link href="/about-us" className="mr-7">
+            <Link href="/about-us" className="mr-7" onClick={closeAll}>
               About
             </Link>
           </div>
@@ -277,6 +287,7 @@ export default function Navbar() {
                     <Link 
                       key={index}
                       href={service.href}
+                      onClick={closeAll}
                       className="flex items-center gap-4 p-3 border border-[#D5D5D5] rounded-lg hover:border-gray-400 transition-colors"
                     >
                       <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
@@ -299,10 +310,10 @@ export default function Navbar() {
                 </div>
               )}
               
-              <Link href="/case-studies" className="block text-2xl py-6 border-b border-[#D5D5D5]">
+              <Link href="/case-studies" className="block text-2xl py-6 border-b border-[#D5D5D5]" onClick={closeAll}>
                 Case studies
               </Link>
-              <Link href="/about-us" className="block text-2xl py-6 border-b border-[#D5D5D5]">
+              <Link href="/about-us" className="block text-2xl py-6 border-b border-[#D5D5D5]" onClick={closeAll}>
                 About
               </Link>
             </div>
@@ -369,6 +380,7 @@ export default function Navbar() {
                   <Link
                     key={index}
                     href={service.href}
+                    onClick={closeAll}
                     className="group relative p-6 border border-[#D5D5D5] rounded-2xl hover:bg-[radial-gradient(40.23%_37.63%_at_50%_50%,_#FF6EC7_0%,_rgba(255,255,255,0)_100%)] transition-all cursor-pointer bg-white"
                   >
                     <div className="flex items-start justify-between mb-6">
